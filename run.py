@@ -1,1 +1,1 @@
-from balance 
+from balance import app
