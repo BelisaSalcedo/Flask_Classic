@@ -1,31 +1,38 @@
 from flask import render_template
+from flask import render_template, request, redirect, url_for
 from balance import app
-
-
 
 @app.route("/")
 def inicio():
-    lista_movimientos = [
-        {
-            "fecha": "2022-01-06",
-            "hora": "13:23:34",
-            "concepto": "reyes",
-            "es_ingreso": False,
-            "cantidad": 80
-        },
-        {
-            "fecha": "2022-01-06",
-            "hora": "13:23:34",
-            "concepto": "reyes",
-            "es_ingreso": True,
-            "cantidad": 180
-        },
-        {
-            "fecha": "2022-01-06",
-            "hora": "13:23:34",
-            "concepto": "lolailo",
-            "es_ingreso": False,
-            "cantidad": 810
-        },
-    ]
-    return render_template("lista_movimientos.html", movimientos = lista_movimientos)
+    lista_movimientos = []
+    fichero_mv = open("data/movimientos.csv", "r")
+    #----------------------------------------------------
+    cab = fichero_mv.readline()
+    linea = fichero_mv.readline()
+    while linea != "":
+        campos = linea.split(",")
+        lista_movimientos.append(
+            {
+                "fecha": campos[0],
+                "hora": campos[1],
+                "concepto": campos[2],
+                "es_ingreso": True if campos[3] == '1' else False,
+                "cantidad": float(campos[4])
+            }
+        )
+        linea = fichero_mv.readline()
+    linea = fichero_mv.readline()
+
+    fichero_mv.close()
+    return render_template("lista_movimientos.html", 
+                            movimientos = lista_movimientos) 
+                            
+
+@app.route("/alta", methods=["GET", "POST"])
+def alta():
+    if request.method == 'GET':
+        return render_template("nuevo_movimiento.html")
+    else:
+        # recuperar los campos del request.form
+        # grabar el nuevo registro en movimientos.csv
+        return redirect(url_for("inicio")) 

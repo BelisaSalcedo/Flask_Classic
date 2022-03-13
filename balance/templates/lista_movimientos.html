@@ -4,34 +4,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Balance de cuenta | Movimientos</title>
-    <style>
-        :root {
-            --color-primario: #8377d1;
-            --color-secundario: #f7dba7;
-            --negro: #2c363f; 
-            --blanco: #fafafa;
-            --separacion-defecto: 8px;        }
-
-        header, footer {
-            padding: calc(2 * var(--separacion-defecto));
-            font-size: 24px;
-            background-color: var(--color-primario);
-            color: var(--blanco);
-            margin-top: var(--separacion-defecto);
-        }
-
-        footer {
-            width: calc(100% - 50px); 
-            position: absolute;
-            bottom: var(--separacion-defecto);
-        }
-    </style>
+    <link rel="stylesheet" href="static/css/styles.css">
+    <link rel="stylesheet" href="static/css/pico.css">
 </head>
 <body>
     <header>
-        Cabecera de <em>balances</em>
+        <div class="container">
+            Cabecera &nbsp;&nbsp;&nbsp; de <em>balances</em>
+        </div>
     </header>
-    <section>
+    <section class="container">
         <h1>Lista de movimientos</h1>
         <table class="tabla_movimientos">
             <tr class="tabla_mv_cabecera">
@@ -47,14 +29,25 @@
                 <td>{{ movimiento.fecha }}</td>
                 <td>{{ movimiento.hora }} </td>
                 <td>{{ movimiento.concepto}}</td>
-                <td>{% if movimiento.es_ingreso %} Ingreso {% else %} Gasto {% endif %}</td>
+                <td>
+                    {% if movimiento.es_ingreso %} 
+                        Ingreso 
+                    {% else %} 
+                        Gasto 
+                    {% endif %}
+                </td>
                 <td>{{ movimiento.cantidad }}</td>
             </tr>
             {% endfor %}
         </table>
+        <p class="actions">
+            <a href="/alta" role="button">+</a>
+        </p>
     </section>
-    <footer class="secundario">
-        Pie
+    <footer>
+        <div class="container">
+            &copy; 2022 - Todos los derechos reservados
+        </div>
     </footer>
 </body>
 </html>
